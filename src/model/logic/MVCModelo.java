@@ -10,7 +10,7 @@ import com.opencsv.CSVReader;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.IArregloDinamico;
 import model.data_structures.LinkedQueue;
-import model.data_structures.Viaje;
+import model.logic.Viaje;
 
 /**
  * Definicion del modelo del mundo
@@ -98,7 +98,7 @@ public class MVCModelo {
 		return datos.eliminar(dato);
 	}
 	
-	public void leerArchivo(int pTrimestre)
+	public void CSVreaderWeek(int pTrimestre)
 	{
 		if(pTrimestre > 4)
 		{
@@ -109,7 +109,53 @@ public class MVCModelo {
 			
 			CSVReader reader = null;
 			try {
-				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+pTrimestre+"-WeeklyAggregate.csv"));			
+				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+pTrimestre+"-All-WeeklyAggregate.csv"));			
+				String[] nextline = reader.readNext();
+				nextline = reader.readNext();
+				int n = 0;
+				while(nextline != null)
+				{					
+						int    sourceid = Integer.parseInt(nextline[0]);
+						int    dstid = Integer.parseInt(nextline[1]);
+						int    dow = Integer.parseInt(nextline[2]);
+						double mean_travel_time = Double.parseDouble(nextline[3]);
+						double standard_deviation_travel_time = Double.parseDouble(nextline[4]);
+						double geometric_mean_travel_time = Double.parseDouble(nextline[5]);
+						double geometric_standard_deviation_travel_time = Double.parseDouble(nextline[6]);	
+						n++;
+						//Viaje nuevo = new Viaje(sourceid, dstid, dow, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+						//lista.enqueue(nuevo);
+
+						nextline = reader.readNext();					
+				}
+				System.out.println("");
+				System.out.println(FNEGRO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
+				System.out.println(FNEGRO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
+				System.out.println("");
+				reader.close();
+				
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void CSVreaderMonth(int pTrimestre)
+	{
+		if(pTrimestre > 4)
+		{
+			System.out.print("Numero de trimestre inválido ");
+		}
+		else
+		{
+			
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-"+pTrimestre+"-All-MonthlyAggregate.csv"));			
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
