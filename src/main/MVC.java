@@ -6,6 +6,6 @@ public class MVC {
 	public static void main(String[] args) 
 	{
 		Controller controler = new Controller();
-		controler.runMesDia();
+		controler.runHourWeekMonth();
 	}
 }
