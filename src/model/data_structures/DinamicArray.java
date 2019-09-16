@@ -1,5 +1,9 @@
 package model.data_structures;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+
 /**
  * 2019-01-23
  * Estructura de Datos Arreglo Dinamico de Strings.
@@ -8,7 +12,7 @@ package model.data_structures;
  *
  */
 @SuppressWarnings("unchecked")
-public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T> 
+public class DinamicArray <T extends Comparable <T>> implements IDinamicArray<T> 
 {
 	/**
 	 * Capacidad maxima del arreglo
@@ -90,7 +94,7 @@ public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T>
 	 * @param dato Objeto de busqueda en el arreglo
 	 * @return elemento encontrado en el arreglo (si existe). null si no se encontro el dato.
 	 */
-	public T buscar( String dato ) 
+	public T buscar( T dato ) 
 	{
 		
 		return null;
@@ -123,6 +127,12 @@ public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T>
 	{
 		return false;
 		
+	}
+
+	@Override
+	public T buscar(String dato) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
