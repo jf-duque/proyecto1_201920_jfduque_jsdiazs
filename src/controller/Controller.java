@@ -32,41 +32,8 @@ public class Controller {
 			view.printMenu();
 
 			int option = lector.nextInt();
-			switch(option){
-				case 1:
-					modelo.leerArchivo(1);
-					printMenu1();
-					break;
-
-				case 2:
-					modelo.leerArchivo(2);	
-					printMenu1();
-					break;
-	
-				case 3:
-					modelo.leerArchivo(3);	
-					printMenu1();
-					break;
-
-				case 4:
-					modelo.leerArchivo(4);	
-					printMenu1();
-					break;
-
-				case 5: 
-					
-					break;	
-					
-				case 6: 
-
-					break;	
-
-				default: 
-					System.out.println("--------- \n Opcion Invalida !! \n---------");
-					break;
-					
-				
-			}
+			modelo.leerArchivo(option);
+			printMenu1();
 		
 	}	
 	
@@ -81,28 +48,25 @@ public class Controller {
 			int option = lector.nextInt();
 			switch(option){
 				case 1:
-					//modelo.consultarTPyDE();
+					view.printZonaOrigen();
+					Scanner lectorZO = new Scanner(System.in);
+					int zonaO = lectorZO.nextInt();
+					view.printZonaDestino();
+					Scanner lectorZD = new Scanner(System.in);
+					int zonaD = lectorZD.nextInt();
+					view.printDiaSemana();
+					Scanner lectorDia = new Scanner(System.in);
+					int dia = lectorDia.nextInt();
+					
+					modelo.consultarTPyDE(zonaO, zonaD, dia);
 					break;
-
+					
 				case 2:
-					modelo.leerArchivo(2);	
+					view.printCantidadViajes();
+					Scanner lectorNV = new Scanner(System.in);
+					int n = lectorNV.nextInt();
+					//modelo.consultarInfoNVMTP(n);
 					break;
-	
-				case 3:
-					modelo.leerArchivo(3);	
-					break;
-
-				case 4:
-					modelo.leerArchivo(4);	
-					break;
-
-				case 5: 
-					
-					break;	
-					
-				case 6: 
-
-					break;	
 
 				default: 
 					System.out.println("--------- \n Opcion Invalida !! \n---------");

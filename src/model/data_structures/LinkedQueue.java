@@ -61,7 +61,11 @@ public class LinkedQueue<Item> implements Iterable<Item> {
      * @return true if this queue is empty; false otherwise
      */
     public boolean isEmpty() {
-        return first == null;
+    	if(first == null)
+    	{
+    		return true;
+    	}
+        return false;
     }
 
     /**
@@ -80,6 +84,15 @@ public class LinkedQueue<Item> implements Iterable<Item> {
     public Item peek() {
         if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         return first.item;
+    }
+    
+    public Item getLast()
+    {
+    	if(!isEmpty())
+    	{
+    		return last.item;
+    	}
+    	return null;
     }
 
     /**

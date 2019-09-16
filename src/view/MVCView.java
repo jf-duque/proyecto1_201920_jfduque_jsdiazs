@@ -30,6 +30,29 @@ public class MVCView
 			System.out.println("3. Comparar los tiempos prmedio de los viajes.");
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
+		
+		//menu para el metodo consultar tiempo promedio y desviacion estandar
+		public void printZonaOrigen()
+		{
+			System.out.print("Ingrese zona de origen: ");
+		}
+		public void printZonaDestino()
+		{
+			System.out.print("Ingrese zona de destino: ");
+		}
+		public void printDiaSemana()
+		{
+			System.out.print("Ingrese el día (siendo domingo = 1, lunes = 2, e.t.c): ");
+		}
+		//---------------------------------------------------------------------
+		
+		//menu para metodo consultar info n viajes con mayor tiempo primedio
+		public void printCantidadViajes()
+		{
+			System.out.print("Ingrese la canditad de viajes que desea consultar:");
+		}
+		//---------------------------------------------------------------------
+		
 
 		public void printMessage(String mensaje) {
 

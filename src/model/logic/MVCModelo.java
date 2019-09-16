@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import com.opencsv.CSVReader;
 
@@ -24,6 +25,8 @@ public class MVCModelo {
 	
 	private LinkedQueue lista;
 	
+	private LinkedQueue listaAuxiliar;
+	
 	 private static String TBLANCO="\u001b[1;37m";
 	 private static String TROJO="\u001b[1;31m";
 	 private static String TVERDECLARO="\u001b[1;32m";
@@ -42,6 +45,10 @@ public class MVCModelo {
 	 private static String FNEGRO="\u001b[1;40m";
 	 
 	 private static String FF="\u001b[0m";
+	 
+	 private Viaje viajeMayorParcial;
+	 
+	 private double mayorParcial;
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
@@ -49,6 +56,9 @@ public class MVCModelo {
 	{
 		datos = new ArregloDinamico(7);
 		lista = new LinkedQueue<Viaje>();
+		listaAuxiliar = new LinkedQueue<Viaje>();
+		viajeMayorParcial = null;
+		mayorParcial = 0;
 	}
 	
 	/**
@@ -113,7 +123,10 @@ public class MVCModelo {
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null)
+				
+				//Debido a la memoria limitada de java solo guarda 3238053 viajes.
+				
+				while(nextline != null && n < 100)
 				{					
 						int    sourceid = Integer.parseInt(nextline[0]);
 						int    dstid = Integer.parseInt(nextline[1]);
@@ -123,14 +136,15 @@ public class MVCModelo {
 						double geometric_mean_travel_time = Double.parseDouble(nextline[5]);
 						double geometric_standard_deviation_travel_time = Double.parseDouble(nextline[6]);	
 						n++;
-						//Viaje nuevo = new Viaje(sourceid, dstid, dow, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
-						//lista.enqueue(nuevo);
+						Viaje nuevo = new Viaje(sourceid, dstid, dow, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+						lista.enqueue(nuevo);
+						//System.out.println(FVERDECLARO + TBLANCO + n + FF + FF);
 
 						nextline = reader.readNext();					
 				}
 				System.out.println("");
-				System.out.println(FNEGRO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
-				System.out.println(FNEGRO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
+				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
+				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
 				System.out.println("");
 				reader.close();
 				
@@ -144,10 +158,111 @@ public class MVCModelo {
 		}
 	}
 	
-	public void consultarTPyDE(int dia, int zonaO, int zonaD)
+	public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
+	{
+		LinkedQueue listaAux = new LinkedQueue<Viaje>();
+		if(lista.isEmpty())
+		{
+			System.out.println("La lista de viajes esta vacía.");
+		}
+		else
+		{
+			Iterator iter = lista.iterator();
+			
+			while(iter.hasNext())
+			{
+				Viaje actual = (Viaje)iter.next();
+				
+				if(actual.getDow() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
+				{
+					listaAux.enqueue(actual);
+				}
+			}
+		}
+		
+		if(listaAux.isEmpty())
+		{
+			System.out.println("");
+			System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
+		}
+		else
+		{
+			System.out.println("");
+			Iterator iter2 = listaAux.iterator();
+			while(iter2.hasNext())
+			{
+				Viaje actual = (Viaje)iter2.next();
+				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
+			}
+		}
+		
+		
+		
+	}
+	
+	public void ordenarPorTiempoPromedio()
 	{
 		
 	}
+	
+	//----------------------------------------------------------------------------
+	
+	/**
+	public void consultarInfoNVMTP(int pNViajes)
+	{
+		Iterator iter = lista.iterator();
+		double mayor = 0;
+		Viaje nuevo = null;
+		
+		while(iter.hasNext()) 
+		{
+			Viaje actual = (Viaje)iter.next();
+			if(actual.getMean_travel_time() > mayor)
+			{
+				mayor = actual.getMean_travel_time();
+				nuevo = actual;
+			}
+		}
+		
+		listaAuxiliar.enqueue(nuevo);
+		
+		viajeMayorParcial = (Viaje)listaAuxiliar.getLast();
+		 mayorParcial = viajeMayorParcial.getMean_travel_time();
+
+		for(int i = 0; i < pNViajes; i++)
+		{
+			funcAux(mayorParcial);
+		}
+		
+		Iterator iter2 = listaAuxiliar.iterator();
+		
+		while(iter2.hasNext())
+		{
+			Viaje actual = (Viaje)iter2.next();
+			
+			System.out.println(actual.getMean_travel_time());
+		}
+	}
+
+	public void funcAux(double pMayorParcial)
+	{
+		Iterator iter = lista.iterator();
+		double mayor = 0;
+		Viaje nuevo = null;
+		while(iter.hasNext()) 
+		{
+			Viaje actual = (Viaje)iter.next();
+			if(actual.getMean_travel_time() > mayor && actual.getMean_travel_time() < mayorParcial)
+			{
+				mayorParcial = actual.getMean_travel_time();
+				nuevo = actual;
+			}
+		}
+		listaAuxiliar.enqueue(nuevo);
+		//System.out.println(listaAuxiliar.size());
+	}
+	*/
+	//-----------------------------------------------------------------------
 
 
 }
