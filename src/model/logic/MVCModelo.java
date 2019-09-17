@@ -134,9 +134,7 @@ public class MVCModelo
 				Viaje actual = (Viaje)iter2.next();
 				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
-		}
-		
-		
+		}	
 		
 	}
 	
@@ -144,71 +142,5 @@ public class MVCModelo
 	{
 		
 	}
-	
-	//----------------------------------------------------------------------------
-	
-	/**
-	public void consultarInfoNVMTP(int pNViajes)
-	{
-		Iterator iter = lista.iterator();
-		double mayor = 0;
-		Viaje nuevo = null;
-		
-		while(iter.hasNext()) 
-		{
-			Viaje actual = (Viaje)iter.next();
-			if(actual.getMean_travel_time() > mayor)
-			{
-				mayor = actual.getMean_travel_time();
-				nuevo = actual;
-			}
-		}
-		
-		listaAuxiliar.enqueue(nuevo);
-		
-		viajeMayorParcial = (Viaje)listaAuxiliar.getLast();
-		 mayorParcial = viajeMayorParcial.getMean_travel_time();
-
-		for(int i = 0; i < pNViajes; i++)
-		{
-			funcAux(mayorParcial);
-		}
-		
-		Iterator iter2 = listaAuxiliar.iterator();
-		
-		while(iter2.hasNext())
-		{
-			Viaje actual = (Viaje)iter2.next();
-			
-			System.out.println(actual.getMean_travel_time());
-		}
-	}
-
-	public void funcAux(double pMayorParcial)
-	{
-		Iterator iter = lista.iterator();
-		double mayor = 0;
-		Viaje nuevo = null;
-		while(iter.hasNext()) 
-		{
-			Viaje actual = (Viaje)iter.next();
-			if(actual.getMean_travel_time() > mayor && actual.getMean_travel_time() < mayorParcial)
-			{
-				mayorParcial = actual.getMean_travel_time();
-				nuevo = actual;
-			}
-		}
-		listaAuxiliar.enqueue(nuevo);
-		//System.out.println(listaAuxiliar.size());
-=======
-
-	public void consultarTPyDE(int dia, int zonaO, int zonaD)
-	{
-
->>>>>>> 68cf0d1adfe5b2fee0e9557996a28eff847f2a8e
-	}
-	*/
-	//-----------------------------------------------------------------------
-
 
 }
