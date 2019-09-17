@@ -1,9 +1,5 @@
 package model.data_structures;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-
 /**
  * 2019-01-23
  * Estructura de Datos Arreglo Dinamico de Strings.
@@ -12,7 +8,7 @@ import java.util.NoSuchElementException;
  *
  */
 @SuppressWarnings("unchecked")
-public class DinamicArray <T extends Comparable <T>> implements IDinamicArray<T> 
+public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T> 
 {
 	/**
 	 * Capacidad maxima del arreglo
@@ -27,26 +23,30 @@ public class DinamicArray <T extends Comparable <T>> implements IDinamicArray<T>
 	 */
 	private T elementos[ ];
 
+	  /**
+     * Tamaño por defecto del arreglo
+     */
+    private static final int TAMAÑO_PROMEDIO = 7;
 	/**
-	 * Construir un arreglo con la capacidad maxima inicial.
-	 * @param max Capacidad maxima inicial
+	 * Construir un arreglo con la capacidad dada por TAMAÑO_PROMEDIO.
 	 */
-	public DinamicArray( )
+	public DinamicArray()
 	{
-		elementos = (T[]) new DinamicArray[tamanoMax];
-		tamanoMax = 0;
+		elementos = (T[]) new Comparable[TAMAÑO_PROMEDIO];
+		tamanoMax = TAMAÑO_PROMEDIO;
 		tamanoAct = 0;
 	}
-
+	
 	/**
-	 * Retornar el numero de elementos maximo en el arreglo
-	 * @return
+	 * Construye un arreglo de acuerdo al tamaño maximo dado por parametro
+	 * @param pMax Tamaño maximo inicial
 	 */
-	public int darCapacidad( )
+	public DinamicArray(int pMax)
 	{
-		return tamanoMax;
-
-	}
+        elementos = (T[]) new Comparable[pMax];
+        tamanoMax = pMax;
+        tamanoAct = pMax;
+    }
 
 	/**
 	 * Retornar el numero de elementos presentes en el arreglo
@@ -64,7 +64,7 @@ public class DinamicArray <T extends Comparable <T>> implements IDinamicArray<T>
 	 */
 	public T darElemento( int i ) 
 	{
-		return null;
+		return elementos[i];
 	}
 
 	/**
@@ -74,49 +74,59 @@ public class DinamicArray <T extends Comparable <T>> implements IDinamicArray<T>
 	 */
 	public void agregar( T dato )
 	{
-		if ( tamanoAct == tamanoMax )
-		{  // caso de arreglo lleno (aumentar tamaNo)
-			tamanoMax = 2 * tamanoMax;
-			T [ ] copia = (T[]) elementos;
-			elementos = (T[]) new DinamicArray[tamanoMax];
-			for ( int i = 0; i < tamanoAct; i++)
-			{
-				elementos[i] = copia[i];
-			} 
-			System.out.println("Arreglo lleno: " + tamanoAct + " - Arreglo duplicado: " + tamanoMax);
-		}	
-		elementos[tamanoAct] = dato;
-		tamanoAct++;
+        if (tamanoAct == tamanoMax) {
+            verificarCapacidad();
+        }
+        elementos[tamanoAct] = dato;
+
+        // Increments the list size. Next item will be placed at the index of this size
+        tamanoAct++;
+    }
+	
+	private void verificarCapacidad()
+	{
+		 tamanoMax = (tamanoMax * 3) / 2 + 1; 
+	        T[] aux = elementos;
+	        elementos = (T[]) new Comparable[tamanoMax];
+
+	        System.arraycopy(aux, 0, elementos, 0, tamanoAct);
 	}
 
-	/**
-	 * Buscar un viaje en el arreglo.
-	 * @param dato Objeto de busqueda en el arreglo
-	 * @return elemento encontrado en el arreglo (si existe). null si no se encontro el dato.
-	 */
-	public T buscar( T dato ) 
-	{
-		
-		return null;
-	}
 
 	/**
 	 * Eliminar un viaje del arreglo.
 	 * Los datos restantes deben quedar "compactos" desde la posicion 0.
-	 * @param T dato de eliminacion en el arreglo
+	 * @param i posicion del dato a eliminar
 	 */
-	public void eliminar( T dato ) 
+	public void eliminar( int i) 
 	{
+		if (i < 0 || i > tamanoAct)
+            throw new IndexOutOfBoundsException(i + " se encuentra fuera de los limites");
+
+        if (i == tamanoAct)
+            elementos[i] = null;
+        else {
+
+            for (int j = i; j < tamanoAct - 1; j++) {
+                elementos[j] = elementos[j + 1];
+            }
+
+            elementos[tamanoAct - 1] = null;
+        }
+        tamanoAct--;
 	}
 
 	/**
 	 * Cambia viaje en la respectiva posicion ingresada por el usuario por otro viaje
-	 * @param index posicion del viaje del arreglo que sera cambiado
+	 * @param i posicion del viaje del arreglo que sera cambiado
 	 * @param  dato que reemplazara al anterior
 	 */
-	public void set(int index, T dato)
+	public void set(int i, T dato)
 	{
-		
+		if (i < 0 || i >= tamanoMax)
+            throw new ArrayIndexOutOfBoundsException();
+
+        elementos[i] = dato;
 	}
 
 	/**
@@ -125,14 +135,23 @@ public class DinamicArray <T extends Comparable <T>> implements IDinamicArray<T>
 	 */
 	public boolean isEmpty()
 	{
-		return false;
-		
+		return tamanoAct==0;
 	}
 
-	@Override
-	public T buscar(String dato) {
-		// TODO Auto-generated method stub
-		return null;
+	public void limpiarTodo() 
+	{
+		if (isEmpty())
+            return;
+
+        for (int i = 0; i < tamanoAct; i++) {
+            elementos[i] = null;
+        }
+        tamanoAct = 0;
+	}
+
+	public DinamicArrayIterator<T> iterator() 
+	{
+		return new DinamicArrayIterator<>(this);
 	}
 
 }
