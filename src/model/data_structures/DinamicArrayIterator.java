@@ -1,96 +1,77 @@
 
 package model.data_structures;
 
-// -------------------------------------------------------------
-// Imports
-// -------------------------------------------------------------
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * Custom iterator for the dynamic array.
- *
- * @param <T> Generic type.
- */
 public class DinamicArrayIterator<T extends Comparable<T>> implements Iterator {
-    // -------------------------------------------------------------
-    // Attributes
-    // -------------------------------------------------------------
+	// -------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------
 
-    /**
-     * A dynamic array.
-     */
-    private DinamicArray<T> array;
+	private DinamicArray<T> array;
 
-    /**
-     * Pointer to the current item.
-     */
-    private int currentPointer;
+	/**
+	 * Apuntador para el item actual.
+	 */
+	private int ApuntadorActual;
 
-    /**
-     * Pointer to the previous item.
-     */
-    private int previousPointer;
+	/**
+	 * Apuntador del item previo.
+	 */
+	private int ApuntadorPrevio;
 
-    // -------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------
-    DinamicArrayIterator(DinamicArray<T> pArray) {
-        array = pArray;
-        currentPointer = 0;
-        previousPointer = currentPointer;
-    }
+	DinamicArrayIterator(DinamicArray<T> pArray) {
+		array = pArray;
+		ApuntadorActual = 0;
+		ApuntadorPrevio = ApuntadorPrevio;
+	}
 
-    // -------------------------------------------------------------
-    // Methods
-    // -------------------------------------------------------------
+	/**
+	 * Verifica si el arreglo contiene siguiente.
+	 * @return retorna true si el arreglo contiene siguiente Item y false en caso contrario.
+	 */
+	@Override
+	public boolean hasNext() {
+		return ApuntadorActual < array.darTamano();
+	}
 
-    /**
-     * Checks if the array has a next item.
-     *
-     * @return True if the array has a next item, false if otherwise.
-     */
-    @Override
-    public boolean hasNext() {
-        return currentPointer < array.size();
-    }
+	/**
+	 * Retorna el siguiente del arreglo.
+	 * @return retorna el item siguiente.
+	 */
+	@Override
+	public T next() 
+	{
+		if (!hasNext())
+			throw new NoSuchElementException("Elemento no existe ");
+		T valor = array.darElemento(ApuntadorActual);
+		ApuntadorPrevio = ApuntadorActual;
+		ApuntadorActual++;
+		return valor;
+	}
+	
+	/**
+	 * Verifica si el arreglo tiene un item previo.
+	 * @return retorna True si el arreglo tiene un item previo y false en caso contrario.
+	 */
+	public boolean hasPrevious() 
+	{
+		return ApuntadorActual != 0;
+	}
 
-    /**
-     * Checks if the array has a previous item.
-     *
-     * @return True if the array has a previous item, false if otherwise.
-     */
-    public boolean hasPrevious() {
-        return currentPointer != 0;
-    }
 
-    /**
-     * Returns the next item in the array.
-     *
-     * @return Next item.
-     */
-    @Override
-    public T next() {
-        if (!hasNext())
-            throw new NoSuchElementException("Element does not exist!");
-        T value = array.get(currentPointer);
-        previousPointer = currentPointer;
-        currentPointer++;
-        return value;
-    }
-
-    /**
-     * Returns the previous item in the array without changing pointers.
-     *
-     * @return Previous item.
-     */
-    public T getPrevious() {
-        T previous;
-        if (!hasPrevious())
-            previous = null;
-        else
-            previous = array.get(previousPointer);
-        return previous;
-    }
+	/**
+	 * Retorna el item previo in el arreglo sin cambiar los apuntadores.
+	 * @return Retorna el item previo.
+	 */
+	public T getPrevious() 
+	{
+		T previo;
+		if (!hasPrevious())
+			previo = null;
+		else
+			previo = array.darElemento(ApuntadorPrevio);
+		return previo;
+	}
 }
