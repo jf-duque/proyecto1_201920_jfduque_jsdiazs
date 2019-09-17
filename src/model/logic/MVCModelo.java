@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import com.opencsv.CSVReader;
-import com.sun.tools.javac.code.Attribute.Array;
 
 import model.data_structures.DinamicArray;
 import model.data_structures.LinkedQueue;
@@ -48,7 +47,7 @@ public class MVCModelo
 	 */
 	public MVCModelo()
 	{
-		//viajes = new DinamicArray<Viaje>();
+		viajes = new DinamicArray<Viaje>();
 		lista = new LinkedQueue<Viaje>();
 	}
 
@@ -67,7 +66,7 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null && n < 100)
+				while(nextline != null && n < 10)
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -79,6 +78,7 @@ public class MVCModelo
 					n++;
 					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
 					lista.enqueue(nuevo);
+					viajes.agregar(nuevo);
 
 					nextline = reader.readNext();					
 				}
@@ -134,15 +134,64 @@ public class MVCModelo
 			while(iter2.hasNext())
 			{
 				Viaje actual = (Viaje)iter2.next();
-				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
+				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
 		}	
 		
 	}
 	
-	public void ordenarPorTiempoPromedio()
-	{
+	public void ordenarPorTiempoPromedio(LinkedQueue arr1, int low, int high)
+	{	
+		Viaje[] arr = arr1.toArray();	
+		System.out.print(arr[lista.size()-1].getMean_travel_time() + "  ");
+		if( low < high) 
+		{
+			int pi = partition(arr, low, high);
+			
+			ordenarPorTiempoPromedio(arr1, low, pi -1);
+			ordenarPorTiempoPromedio(arr1, pi +1 , high);
+		}	
 		
+	}
+	
+	//Metodo auxiliar quicksort
+	
+	public int partition( Viaje[] arr, int low, int high) 
+	{
+		Viaje pivot = (Viaje)arr[high];
+		int i = low - 1; 
+		
+		for( int j = low; j <= high -1; j++ ) 
+		{
+			if( arr[j].getMean_travel_time() <= pivot.getMean_travel_time()) 
+			{
+				i++;
+				
+				Viaje var = arr[i];
+				arr[i] = arr[j];
+				arr[j] = var;
+			}
+		}
+		
+		Viaje var = arr[ i+1 ];
+		arr[i+1] = arr[high];
+		arr[high] = var; 
+		
+		return i + 1;	
+		
+		
+	}
+	
+	public void consultarInfoNVMTP(int pN)
+	{
+		ordenarPorTiempoPromedio(lista, 0, lista.size()-1);
+		Iterator iter = lista.iterator();
+		
+		if(iter.hasNext())
+		{
+			Viaje actual = (Viaje)iter.next();
+			System.out.print(actual.getMean_travel_time());
+		}
 	}
 
 }

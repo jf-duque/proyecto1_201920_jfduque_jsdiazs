@@ -98,7 +98,7 @@ public class Controller {
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			//modelo.consultarInfoNVMTP(n);
+			modelo.consultarInfoNVMTP(n);
 			break;
 
 		default: 
