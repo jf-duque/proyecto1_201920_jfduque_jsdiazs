@@ -43,6 +43,9 @@ public class Controller {
 			case 2:
 				runWeek();
 				break;
+			case 3:
+				runMonth();
+				break;
 			case 4:
 				System.out.println("--------- \n Hasta pronto !! \n---------"); 
 				lector.close();
@@ -103,68 +106,20 @@ public class Controller {
 			break;
 		}
 	}
-
-	public void runFuncionesWeek()
+	
+	public void runMonth()	
 	{
+
 		Scanner lector = new Scanner(System.in);
 		boolean fin = false;
 		String dato = "";
 		String respuesta = "";
+		
+		view.printTrimestre();
 		int option = lector.nextInt();
-		switch(option){
-		case 1:
-			view.printZonaOrigen();
-			Scanner lectorZO = new Scanner(System.in);
-			int zonaO = lectorZO.nextInt();
-			view.printZonaDestino();
-			Scanner lectorZD = new Scanner(System.in);
-			int zonaD = lectorZD.nextInt();
-			view.printDiaSemana();
-			Scanner lectorDia = new Scanner(System.in);
-			int dia = lectorDia.nextInt();					
-			modelo.consultarTPyDE(zonaO, zonaD, dia);
-			break;
-
-		case 2:
-			view.printCantidadViajes();
-			Scanner lectorNV = new Scanner(System.in);
-			int n = lectorNV.nextInt();
-			//modelo.consultarInfoNVMTP(n);
-			break;
-
-		default: 
-			System.out.println("--------- \n Opcion Invalida !! \n---------");
-			break;
-		}
-	}
-	public void Funciones() 
-	{
-
-		Scanner lector = new Scanner(System.in);
-		boolean fin = false;
-		String dato = "";
-		String respuesta = "";
-
-		while( !fin ){
-
-			int option = lector.nextInt();
-			switch(option){
-			case 1:
-				break;
-
-			case 2:
-				break;
-
-			case 3:
-				break;
-
-			case 4: 
-				System.out.println("--------- \n Hasta pronto !! \n---------"); 
-				lector.close();
-				fin = true;
-				break;	
-			}
-			fin=true;
-		}
-	}
+		modelo.CSVreaderWeek(option);
+		printMenu1();
+	}	
+	
 }
+
