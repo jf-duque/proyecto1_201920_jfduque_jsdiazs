@@ -372,9 +372,9 @@ public class MVCModelo
 		for(int i = 0; i < viajes.darTamano(); i++)
 		{
 			Viaje act = viajes.darElemento(i);
-			if(act.getSourceid() >= pZonaO && act.getDstid() <= pZonaD && act.getHourDayMonth() >= pHI)
+			if(act.getSourceid() >= pZonaO && act.getDstid() <= pZonaD && act.getHourDayMonth() >= pHI && act.getHourDayMonth() <= pHF)
 			{
-				
+				System.out.print("");
 			}
 		}
 	}
