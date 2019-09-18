@@ -26,7 +26,7 @@ public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T>
 	  /**
      * Tamaño por defecto del arreglo
      */
-    private static final int TAMAÑO_PROMEDIO = 7;
+    private static final int TAMAÑO_PROMEDIO = 5;
 	/**
 	 * Construir un arreglo con la capacidad dada por TAMAÑO_PROMEDIO.
 	 */
@@ -74,24 +74,16 @@ public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T>
 	 */
 	public void agregar( T dato )
 	{
-        if (tamanoAct == tamanoMax) {
-            verificarCapacidad();
+		if (tamanoAct == tamanoMax) 
+		{
+			tamanoMax = (tamanoMax * 3) / 2 + 1; 
+	        T[] copy = elementos;
+	        elementos = (T[]) new Comparable[tamanoMax];
+	        System.arraycopy(copy, 0, elementos, 0, tamanoAct);
         }
         elementos[tamanoAct] = dato;
-
-        // Increments the list size. Next item will be placed at the index of this size
         tamanoAct++;
     }
-	
-	private void verificarCapacidad()
-	{
-		 tamanoMax = (tamanoMax * 3) / 2 + 1; 
-	        T[] aux = elementos;
-	        elementos = (T[]) new Comparable[tamanoMax];
-
-	        System.arraycopy(aux, 0, elementos, 0, tamanoAct);
-	}
-
 
 	/**
 	 * Eliminar un viaje del arreglo.
@@ -125,7 +117,6 @@ public class DinamicArray <T extends Comparable <T>>implements IDinamicArray<T>
 	{
 		if (i < 0 || i >= tamanoMax)
             throw new ArrayIndexOutOfBoundsException();
-
         elementos[i] = dato;
 	}
 

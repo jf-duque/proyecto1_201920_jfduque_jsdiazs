@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import com.opencsv.CSVReader;
-import com.sun.tools.javac.code.Attribute.Array;
 
 import model.data_structures.DinamicArray;
+import model.data_structures.DinamicArrayIterator;
 import model.data_structures.LinkedQueue;
 import model.logic.Viaje;
 
@@ -24,6 +24,7 @@ public class MVCModelo
 	 * Atributos del modelo del mundo
 	 */
 	private DinamicArray<Viaje> viajes;
+	private DinamicArrayIterator<Viaje> listaMes;
 	private LinkedQueue<Viaje> lista;
 	private static String TBLANCO="\u001b[1;37m";
 	private static String TROJO="\u001b[1;31m";
@@ -48,8 +49,10 @@ public class MVCModelo
 	 */
 	public MVCModelo()
 	{
-		//viajes = new DinamicArray<Viaje>();
+		viajes = new DinamicArray<Viaje>();
+		listaMes = new DinamicArrayIterator<Viaje>(viajes);
 		lista = new LinkedQueue<Viaje>();
+
 	}
 
 	public void CSVreaderWeek(int pTrimestre)
@@ -78,13 +81,15 @@ public class MVCModelo
 					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
 					n++;
 					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
-					lista.enqueue(nuevo);
+					//lista.enqueue(nuevo);
+					viajes.agregar(nuevo);
 
 					nextline = reader.readNext();					
 				}
 				System.out.println("");
 				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
 				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
+				zonaMenorId();
 				System.out.println("");
 				reader.close();
 
@@ -98,11 +103,101 @@ public class MVCModelo
 		}
 	}
 
-	
+	public void CSVreaderMonth(int pTrimestre)
+	{
+		if(pTrimestre > 4)
+		{
+			System.out.print("Numero de trimestre inválido ");
+		}
+		else
+		{
+
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + pTrimestre + "-All-MonthlyAggregate.csv"));			
+				String[] nextline = reader.readNext();
+				nextline = reader.readNext();
+				int n = 0;
+				while(nextline != null && n<100)
+				{					
+					int   sourceid = Integer.parseInt(nextline[0]);
+					int   dstid = Integer.parseInt(nextline[1]);
+					int   dayHourMonth = Integer.parseInt(nextline[2]);
+					float mean_travel_time = Float.parseFloat(nextline[3]);
+					float standard_deviation_travel_time = Float.parseFloat(nextline[4]);
+					float geometric_mean_travel_time = Float.parseFloat(nextline[5]);
+					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
+					n++;
+					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+					viajes.agregar(nuevo);
+					nextline = reader.readNext();					
+				}
+
+				System.out.println("");
+				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
+				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
+				zonaMenorId();
+				zonaMayorId();
+				System.out.println("");
+				reader.close();
+
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+	public void consultarTPyDEMes(int pZonaO, int pZonaD, int pMes)
+	{
+		DinamicArray aux; = new DinamicArray<Viaje>();
+		if(viajes.isEmpty())
+		{
+			System.out.println("La lista de viajes esta vacía.");
+		}
+		else
+		{
+			Iterator iter = viajes.iterator();
+
+			while(iter.hasNext())
+			{
+				Viaje actual = (Viaje)iter.next();
+
+				if(actual.getHourDayMonth() == pMes && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
+				{
+					viajes.agregar(actual);
+				}
+			}
+		}
+
+		if(viajes.isEmpty())
+		{
+			System.out.println("");
+			System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
+		}
+		else
+		{
+			System.out.println("");
+			Iterator iter2 = viajes.iterator();
+			while(iter2.hasNext())
+			{
+				Viaje actual = (Viaje)iter2.next();
+				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
+			}
+		}
+
+
+	}
+
 	public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
 	{
 		LinkedQueue listaAux = new LinkedQueue<Viaje>();
-		
+
 		if(lista.isEmpty())
 		{
 			System.out.println("La lista de viajes esta vacía.");
@@ -110,18 +205,18 @@ public class MVCModelo
 		else
 		{
 			Iterator iter = lista.iterator();
-			
+
 			while(iter.hasNext())
 			{
 				Viaje actual = (Viaje)iter.next();
-				
+
 				if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
 				{
 					listaAux.enqueue(actual);
 				}
 			}
 		}
-		
+
 		if(listaAux.isEmpty())
 		{
 			System.out.println("");
@@ -137,25 +232,49 @@ public class MVCModelo
 				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
 		}
-		
-		
-		
+
+
 	}
-	
 	public void ordenarPorTiempoPromedio()
 	{
-		
+
 	}
-	
+
+	private void zonaMenorId() 
+	{
+		Viaje menorZona = viajes.darElemento(1);
+		for (int i = 0; i < viajes.darTamano(); i++) 
+		{
+			if(menorZona.compareTo(viajes.darElemento(i))==1)
+			{
+				menorZona=viajes.darElemento(i);
+			}
+		}
+		System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
+	}
+
+	public void zonaMayorId()
+	{
+		Viaje mayorZona = viajes.darElemento(1);
+		for (int i = 0; i < viajes.darTamano(); i++) 
+		{
+			if(mayorZona.compareTo(viajes.darElemento(i))==-1)
+			{
+				mayorZona=viajes.darElemento(i);
+			}
+		}
+		System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
+	}
+
 	//----------------------------------------------------------------------------
-	
+
 	/**
 	public void consultarInfoNVMTP(int pNViajes)
 	{
 		Iterator iter = lista.iterator();
 		double mayor = 0;
 		Viaje nuevo = null;
-		
+
 		while(iter.hasNext()) 
 		{
 			Viaje actual = (Viaje)iter.next();
@@ -165,9 +284,9 @@ public class MVCModelo
 				nuevo = actual;
 			}
 		}
-		
+
 		listaAuxiliar.enqueue(nuevo);
-		
+
 		viajeMayorParcial = (Viaje)listaAuxiliar.getLast();
 		 mayorParcial = viajeMayorParcial.getMean_travel_time();
 
@@ -175,13 +294,13 @@ public class MVCModelo
 		{
 			funcAux(mayorParcial);
 		}
-		
+
 		Iterator iter2 = listaAuxiliar.iterator();
-		
+
 		while(iter2.hasNext())
 		{
 			Viaje actual = (Viaje)iter2.next();
-			
+
 			System.out.println(actual.getMean_travel_time());
 		}
 	}
@@ -209,7 +328,7 @@ public class MVCModelo
 
 >>>>>>> 68cf0d1adfe5b2fee0e9557996a28eff847f2a8e
 	}
-	*/
+	 */
 	//-----------------------------------------------------------------------
 
 

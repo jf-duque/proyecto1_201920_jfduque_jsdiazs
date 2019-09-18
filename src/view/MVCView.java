@@ -36,7 +36,7 @@ public class MVCView
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
 		
-		public void printMenu1()
+		public void funciones() // funciones lo modifique
 		{
 			System.out.println("Elegir la funcion:");
 			System.out.println("1. Consultar timepo promedio de viaje y su desviación estandar.");
@@ -58,6 +58,11 @@ public class MVCView
 		public void printDiaSemana()
 		{
 			System.out.print("Ingrese el día (siendo domingo = 1, lunes = 2, e.t.c): ");
+		}
+		
+		public void printMes()
+		{
+			System.out.print("Ingrese el mes (siendo enero = 1, febrero = 2, e.t.c): ");
 		}
 		//---------------------------------------------------------------------
 		

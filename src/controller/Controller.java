@@ -70,9 +70,23 @@ public class Controller {
 		printMenu1();
 	}	
 
+	public void runMonth()	
+	{
+		
+		Scanner lector = new Scanner(System.in);
+		boolean fin = false;
+		String dato = "";
+		String respuesta = "";
+		
+		view.printTrimestre();
+		int option = lector.nextInt();
+		modelo.CSVreaderMonth(option);
+		printMenu2();
+	}	
+	
 	public void printMenu1()
 	{
-		view.printMenu1();
+		view.funciones();
 		Scanner lector = new Scanner(System.in);
 		boolean fin = false;
 		String dato = "";
@@ -91,7 +105,7 @@ public class Controller {
 			Scanner lectorDia = new Scanner(System.in);
 			int dia = lectorDia.nextInt();					
 			modelo.consultarTPyDE(zonaO, zonaD, dia);
-			view.printMenu1();
+			view.funciones();
 			break;
 
 		case 2:
@@ -107,19 +121,43 @@ public class Controller {
 		}
 	}
 	
-	public void runMonth()	
+	public void printMenu2()
 	{
-
+		view.funciones();
 		Scanner lector = new Scanner(System.in);
 		boolean fin = false;
 		String dato = "";
 		String respuesta = "";
-		
-		view.printTrimestre();
 		int option = lector.nextInt();
-		modelo.CSVreaderWeek(option);
-		printMenu1();
-	}	
+		switch(option)
+		{
+		case 1:
+			view.printZonaOrigen();
+			Scanner lectorZO = new Scanner(System.in);
+			int zonaO = lectorZO.nextInt();
+			view.printZonaDestino();
+			Scanner lectorZD = new Scanner(System.in);
+			int zonaD = lectorZD.nextInt();
+			view.printMes();
+			Scanner lectorMes = new Scanner(System.in);
+			int mes = lectorMes.nextInt();					
+			modelo.consultarTPyDEMes(zonaO, zonaD, mes);
+			view.funciones();
+			break;
+
+		case 2:
+			view.printCantidadViajes();
+			Scanner lectorNV = new Scanner(System.in);
+			int n = lectorNV.nextInt();
+			//modelo.consultarInfoNVMTP(n);
+			break;
+
+		default: 
+			System.out.println("--------- \n Opcion Invalida !! \n---------");
+			break;
+		}
+	}
+	
 	
 }
 

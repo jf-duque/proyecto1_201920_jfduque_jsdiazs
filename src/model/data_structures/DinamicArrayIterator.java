@@ -21,10 +21,11 @@ public class DinamicArrayIterator<T extends Comparable<T>> implements Iterator {
 	 */
 	private int ApuntadorPrevio;
 
-	DinamicArrayIterator(DinamicArray<T> pArray) {
+	 public DinamicArrayIterator(DinamicArray<T> pArray) 
+	{
 		array = pArray;
 		ApuntadorActual = 0;
-		ApuntadorPrevio = ApuntadorPrevio;
+		ApuntadorPrevio = ApuntadorActual;
 	}
 
 	/**
