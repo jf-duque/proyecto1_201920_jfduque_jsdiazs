@@ -109,10 +109,13 @@ public class Controller {
 			break;
 
 		case 2:
+			view.printDia();
+			Scanner lectorD = new Scanner(System.in);
+			int d = lectorD.nextInt();
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			//modelo.consultarInfoNVMTP(n);
+			modelo.ordenarPorTimepoPromedio(n, d);
 			break;
 
 		default: 

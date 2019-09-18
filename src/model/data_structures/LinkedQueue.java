@@ -16,6 +16,8 @@ package model.data_structures;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import model.logic.Viaje;
+
 /**
  *  The {@code LinkedQueue} class represents a first-in-first-out (FIFO)
  *  queue of generic items.
@@ -41,9 +43,9 @@ public class LinkedQueue<Item> implements Iterable<Item> {
     private Node last;     // end of queue
 
     // helper linked list class
-    private class Node {
-        private Item item;
-        private Node next;
+    public class Node {
+        public Item item;
+        public Node next;
     }
 
     /**
@@ -197,6 +199,22 @@ public class LinkedQueue<Item> implements Iterable<Item> {
             return item;
         }
     }
+    
+    public Viaje[] toArray( ) 
+	{
+		 Viaje[] arreglo= new Viaje[this.size()];
+		 
+		 Iterator iter= this.iterator();
+		 int i=0;
+		 
+		 while(iter.hasNext())
+		 {
+			 Viaje actual= (Viaje) iter.next();
+			 arreglo[i]= actual;
+			 i++;
+		 }
+		 return arreglo;
+	}
 
 }
 

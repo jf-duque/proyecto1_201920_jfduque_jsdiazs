@@ -50,7 +50,10 @@ public class MVCModelo
 	public MVCModelo()
 	{
 		viajes = new DinamicArray<Viaje>();
+<<<<<<< HEAD
 		listaMes = new DinamicArrayIterator<Viaje>(viajes);
+=======
+>>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
 		lista = new LinkedQueue<Viaje>();
 
 	}
@@ -70,7 +73,7 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null && n < 100)
+				while(nextline != null && n < 1000000)
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -81,6 +84,7 @@ public class MVCModelo
 					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
 					n++;
 					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+<<<<<<< HEAD
 					//lista.enqueue(nuevo);
 					viajes.agregar(nuevo);
 
@@ -111,6 +115,10 @@ public class MVCModelo
 		}
 		else
 		{
+=======
+					lista.enqueue(nuevo);
+					viajes.agregar(nuevo);
+>>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
 
 			CSVReader reader = null;
 			try {
@@ -229,8 +237,9 @@ public class MVCModelo
 			while(iter2.hasNext())
 			{
 				Viaje actual = (Viaje)iter2.next();
-				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
+				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
+<<<<<<< HEAD
 		}
 
 
@@ -276,14 +285,26 @@ public class MVCModelo
 		Viaje nuevo = null;
 
 		while(iter.hasNext()) 
+=======
+		}	
+		
+	}
+	
+	public void ordenarPorTimepoPromedio(int pN, int pDia)
+	{
+		quickSort(viajes, 0, viajes.darTamano()-1);
+		int cant = 0;
+		for(int i = viajes.darTamano()-1; i >= 0 && cant < pN; i--)
+>>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
 		{
-			Viaje actual = (Viaje)iter.next();
-			if(actual.getMean_travel_time() > mayor)
+			if(viajes.darElemento(i).getHourDayMonth() ==  pDia)
 			{
-				mayor = actual.getMean_travel_time();
-				nuevo = actual;
+				cant++;
+				Viaje act = viajes.darElemento(i);
+				System.out.println(FVERDECLARO + TBLANCO + cant + ". Zona de origen: " + act.getSourceid() + "  || Zona destino: " + act.getDstid() + "  || T promeido: " + act.getMean_travel_time() + "  || D estadar: " + act.getStandard_deviation_travel_time() + FF + FF);			
 			}
 		}
+<<<<<<< HEAD
 
 		listaAuxiliar.enqueue(nuevo);
 
@@ -331,5 +352,43 @@ public class MVCModelo
 	 */
 	//-----------------------------------------------------------------------
 
+=======
+	}
+	
+	//---------------------------ORDENAMIENTO-----------------------------------------------
+	//--------------------------------------------------------------------------------------
+	
+	public static void quickSort(DinamicArray arr, int start, int end){
+		 
+        int partition = partition(arr, start, end);
+ 
+        if(partition-1>start) {
+            quickSort(arr, start, partition - 1);
+        }
+        if(partition+1<end) {
+            quickSort(arr, partition + 1, end);
+        }
+    }
+ 
+    public static int partition(DinamicArray arr, int start, int end){
+        Viaje pivot = (Viaje) arr.darElemento(end);
+ 
+        for(int i = start; i < end; i++){
+            if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
+                Viaje temp = (Viaje) arr.darElemento(start);
+                
+                arr.set(start, arr.darElemento(i));
+                arr.set(i, temp);
+                start++;
+            }
+        }
+ 
+        Viaje temp = (Viaje) arr.darElemento(start);
+        arr.set(start, pivot);
+        arr.set(end, temp);
+ 
+        return start;
+    }
+>>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
 
 }

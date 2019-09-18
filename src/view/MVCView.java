@@ -67,10 +67,15 @@ public class MVCView
 		//---------------------------------------------------------------------
 		
 		//menu para metodo consultar info n viajes con mayor tiempo primedio
+		
+		public void printDia()
+		{
+			System.out.print("Ingrese el día que desea consultar:");
+		}
 		public void printCantidadViajes()
 		{
 			System.out.print("Ingrese la canditad de viajes que desea consultar:");
-		}
+		}	
 		//---------------------------------------------------------------------
 		
 
