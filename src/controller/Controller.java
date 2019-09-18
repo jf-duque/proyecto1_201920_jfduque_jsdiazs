@@ -210,13 +210,10 @@ public class Controller {
 
 		case 2:
 			view.printHora();
-<<<<<<< HEAD
 			Scanner lectorD = new Scanner(System.in);
 			int d = lectorD.nextInt();
-=======
 			Scanner lectorH = new Scanner(System.in);
 			int h = lectorH.nextInt();
->>>>>>> 7ed373e25a2dc89e837abede7e5d82df66412d5a
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();

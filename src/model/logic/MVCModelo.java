@@ -172,11 +172,8 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-<<<<<<< HEAD
 				while(nextline != null )
-=======
 				while(nextline != null && n < 100)
->>>>>>> 7ed373e25a2dc89e837abede7e5d82df66412d5a
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
