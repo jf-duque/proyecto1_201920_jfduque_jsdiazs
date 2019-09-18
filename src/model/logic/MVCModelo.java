@@ -45,6 +45,8 @@ public class MVCModelo
 	private static String FNEGRO="\u001b[1;40m";
 
 	private static String FF="\u001b[0m";
+	
+	private int trimestre;
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
@@ -53,6 +55,7 @@ public class MVCModelo
 		viajes = new DinamicArray<Viaje>();
 		listaMes = new DinamicArray<Viaje>();
 		lista = new LinkedQueue<Viaje>();
+		trimestre = 0;
 
 	}
 	
@@ -64,14 +67,14 @@ public class MVCModelo
 		}
 		else
 		{
-
+			trimestre = pTrimestre;
 			CSVReader reader = null;
 			try {
 				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + pTrimestre + "-All-HourlyAggregate.csv"));			
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null && n < 1000000)
+				while(nextline != null)
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -91,6 +94,7 @@ public class MVCModelo
 				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
 				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
 				zonaMenorId();
+				zonaMayorId();
 				System.out.println("");
 				reader.close();
 
@@ -119,7 +123,7 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null && n < 1000000)
+				while(nextline != null)
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -139,6 +143,7 @@ public class MVCModelo
 				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
 				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
 				zonaMenorId();
+				zonaMayorId();
 				System.out.println("");
 				reader.close();
 
@@ -167,7 +172,11 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
+<<<<<<< HEAD
 				while(nextline != null )
+=======
+				while(nextline != null && n < 100)
+>>>>>>> 7ed373e25a2dc89e837abede7e5d82df66412d5a
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -372,16 +381,45 @@ public class MVCModelo
 	//----------------------------Funciones para hora------------------------------------------
 	//-----------------------------------------------------------------------------------------
 	
-	public void consultarViajesFrajaH(int pZonaO, int pZonaD, int pHI, int pHF)
+	public void consultarViajesFranjaH(int pZonaO, int pZonaD, int pHI, int pHF)
 	{
+		int cant = 0;
 		for(int i = 0; i < viajes.darTamano(); i++)
 		{
 			Viaje act = viajes.darElemento(i);
-			if(act.getSourceid() >= pZonaO && act.getDstid() <= pZonaD && act.getHourDayMonth() >= pHI && act.getHourDayMonth() <= pHF)
+			if((act.getSourceid() >= pZonaO) && (act.getDstid() <= pZonaD) && (act.getHourDayMonth() >= pHI) && (act.getHourDayMonth() <= pHF))
 			{
-				System.out.print("");
+				cant++;
+				System.out.println(FVERDECLARO + TBLANCO + cant + ". Tiempo Promedio: " + act.getMean_travel_time() + " || Desviacion estandar: " + act.getStandard_deviation_travel_time() + FF + FF);
 			}
 		}
+	}
+	
+	public void crearASCII(int pZonaO, int pZonaD)
+	{
+		System.out.println(FVERDECLARO + TBLANCO +"Aproximación en minutos de viajes entre zona origen y zona destino." + FF + FF);
+		System.out.println(FVERDECLARO + TBLANCO +"Trimestre "+ trimestre +" del 2018 detallado por cada hora del día" + FF + FF);
+		System.out.println(FVERDECLARO + TBLANCO + "Zona Origen "+ pZonaO + FF + FF);
+		System.out.println(FVERDECLARO + TBLANCO + "Zona Destinio "+ pZonaD + FF + FF);
+		System.out.println(FVERDECLARO + TBLANCO + "Hora |   # de minutos " + FF + FF);
+		
+		
+		for(int i = 0; i < 24; i++)
+		{
+			System.out.print(FVERDECLARO + TBLANCO + i + "    |" + FF + FF);
+			for(int j = 0; j < viajes.darTamano(); j++)
+			{
+				Viaje act = viajes.darElemento(j);
+				if(act.getSourceid() >= pZonaO && act.getDstid() <= pZonaD && act.getHourDayMonth() == i)
+				{
+					int a = Math.round(act.getMean_travel_time());
+					int minutos = a / 60;
+					System.out.print(FVERDECLARO + TBLANCO + "   " + minutos + " " + FF + FF);
+				}
+			}
+			System.out.println();
+		}
+		
 	}
 
 }

@@ -204,20 +204,34 @@ public class Controller {
 			view.printHoraF();
 			Scanner lectorF = new Scanner(System.in);
 			int HF = lectorF.nextInt();
-			modelo.consultarViajesFrajaH(zonaO, zonaD, HI, HF);
+			modelo.consultarViajesFranjaH(zonaO, zonaD, HI, HF);
 			view.funcionesHour();
 			break;
 
 		case 2:
 			view.printHora();
+<<<<<<< HEAD
 			Scanner lectorD = new Scanner(System.in);
 			int d = lectorD.nextInt();
+=======
+			Scanner lectorH = new Scanner(System.in);
+			int h = lectorH.nextInt();
+>>>>>>> 7ed373e25a2dc89e837abede7e5d82df66412d5a
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			modelo.ordenarPorTimepoPromedio(n, d);
+			modelo.ordenarPorTimepoPromedio(n, h);
 			break;
-
+			
+		case 3:
+			view.printZonaOrigen();
+			Scanner lectorZO2 = new Scanner(System.in);
+			int zonaO2 = lectorZO2.nextInt();
+			view.printZonaDestino();
+			Scanner lectorZD2 = new Scanner(System.in);
+			int zonaD2 = lectorZD2.nextInt();
+			modelo.crearASCII(zonaO2, zonaD2);
+			break;
 
 		default: 
 			System.out.println("--------- \n Opcion Invalida !! \n---------");

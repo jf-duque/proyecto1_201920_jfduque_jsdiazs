@@ -49,7 +49,7 @@ public class MVCView
 		public void funcionesHour()
 		{
 			System.out.println("Elegir la funcion:");
-			System.out.println("1.Consultar los viajes entre una zona de origen y una zona destino en una franja horaria.");
+			System.out.println("1. Consultar los viajes entre una zona de origen y una zona destino en una franja horaria.");
 			System.out.println("2. Consultar la información de los N viajes con mayor tiempo promedio para una hora dada.");
 			System.out.println("3. Generar una gráfica ASCII.");
 			System.out.println("4. Exit");
@@ -66,6 +66,11 @@ public class MVCView
 		public void printHoraF()
 		{
 			System.out.print("Ingrese la hora final: ");
+		}
+		
+		public void printHora()
+		{
+			System.out.print("Ingrese la hora: ");
 		}
 		
 		//menu para el metodo consultar tiempo promedio y desviacion estandar
