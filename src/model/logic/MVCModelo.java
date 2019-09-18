@@ -156,14 +156,10 @@ public class MVCModelo
 
 	public void consultarTPyDEMes(int pZonaO, int pZonaD, int pMes)
 	{
-<<<<<<< HEAD
 		LinkedQueue listaAux = new LinkedQueue<Viaje>();
 
-		if(lista.isEmpty())
-=======
 		DinamicArray aux = new DinamicArray<Viaje>();
 		if(viajes.isEmpty())
->>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e
 		{
 			System.out.println("La lista de viajes esta vacía.");
 		}
@@ -238,16 +234,10 @@ public class MVCModelo
 					System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 				}
 			}
-<<<<<<< HEAD
 
 
 		}
 
-=======
-		}
-
-
-	}
 	public void ordenarPorTimepoPromedio(int pN, int pDia)
 	{
 		quickSort(viajes, 0, viajes.darTamano()-1);
@@ -262,7 +252,6 @@ public class MVCModelo
 			}
 		}
 	}
->>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e
 
 		private void zonaMenorId() 
 		{
@@ -290,7 +279,6 @@ public class MVCModelo
 			System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
 		}
 
-<<<<<<< HEAD
 
 		//---------------------------ORDENAMIENTO-----------------------------------------------
 		//--------------------------------------------------------------------------------------
@@ -328,41 +316,3 @@ public class MVCModelo
 		}
 
 	}
-=======
-	//---------------------------ORDENAMIENTO-----------------------------------------------
-	//--------------------------------------------------------------------------------------
-	
-	public static void quickSort(DinamicArray arr, int start, int end){
-		 
-        int partition = partition(arr, start, end);
- 
-        if(partition-1>start) {
-            quickSort(arr, start, partition - 1);
-        }
-        if(partition+1<end) {
-            quickSort(arr, partition + 1, end);
-        }
-    }
- 
-    public static int partition(DinamicArray arr, int start, int end){
-        Viaje pivot = (Viaje) arr.darElemento(end);
- 
-        for(int i = start; i < end; i++){
-            if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
-                Viaje temp = (Viaje) arr.darElemento(start);
-                
-                arr.set(start, arr.darElemento(i));
-                arr.set(i, temp);
-                start++;
-            }
-        }
- 
-        Viaje temp = (Viaje) arr.darElemento(start);
-        arr.set(start, pivot);
-        arr.set(end, temp);
- 
-        return start;
-    }
-
-}
->>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e

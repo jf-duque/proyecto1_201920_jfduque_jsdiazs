@@ -115,7 +115,7 @@ public class Controller {
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			//modelo.ordenarPorTimepoPromedio(n, d);
+			modelo.ordenarPorTimepoPromedio(n, d);
 			break;
 
 		default: 
