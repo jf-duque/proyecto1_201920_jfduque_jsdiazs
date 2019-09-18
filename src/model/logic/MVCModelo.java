@@ -24,7 +24,7 @@ public class MVCModelo
 	 * Atributos del modelo del mundo
 	 */
 	private DinamicArray<Viaje> viajes;
-	private DinamicArrayIterator<Viaje> listaMes;
+	private DinamicArray<Viaje> listaMes;
 	private LinkedQueue<Viaje> lista;
 	private static String TBLANCO="\u001b[1;37m";
 	private static String TROJO="\u001b[1;31m";
@@ -50,10 +50,7 @@ public class MVCModelo
 	public MVCModelo()
 	{
 		viajes = new DinamicArray<Viaje>();
-<<<<<<< HEAD
-		listaMes = new DinamicArrayIterator<Viaje>(viajes);
-=======
->>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
+		listaMes = new DinamicArray<Viaje>();
 		lista = new LinkedQueue<Viaje>();
 
 	}
@@ -84,8 +81,7 @@ public class MVCModelo
 					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
 					n++;
 					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
-<<<<<<< HEAD
-					//lista.enqueue(nuevo);
+					lista.enqueue(nuevo);
 					viajes.agregar(nuevo);
 
 					nextline = reader.readNext();					
@@ -115,10 +111,6 @@ public class MVCModelo
 		}
 		else
 		{
-=======
-					lista.enqueue(nuevo);
-					viajes.agregar(nuevo);
->>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
 
 			CSVReader reader = null;
 			try {
@@ -137,6 +129,7 @@ public class MVCModelo
 					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
 					n++;
 					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+					lista.enqueue(nuevo);
 					viajes.agregar(nuevo);
 					nextline = reader.readNext();					
 				}
@@ -163,47 +156,6 @@ public class MVCModelo
 
 	public void consultarTPyDEMes(int pZonaO, int pZonaD, int pMes)
 	{
-		DinamicArray aux; = new DinamicArray<Viaje>();
-		if(viajes.isEmpty())
-		{
-			System.out.println("La lista de viajes esta vacía.");
-		}
-		else
-		{
-			Iterator iter = viajes.iterator();
-
-			while(iter.hasNext())
-			{
-				Viaje actual = (Viaje)iter.next();
-
-				if(actual.getHourDayMonth() == pMes && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
-				{
-					viajes.agregar(actual);
-				}
-			}
-		}
-
-		if(viajes.isEmpty())
-		{
-			System.out.println("");
-			System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
-		}
-		else
-		{
-			System.out.println("");
-			Iterator iter2 = viajes.iterator();
-			while(iter2.hasNext())
-			{
-				Viaje actual = (Viaje)iter2.next();
-				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
-			}
-		}
-
-
-	}
-
-	public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
-	{
 		LinkedQueue listaAux = new LinkedQueue<Viaje>();
 
 		if(lista.isEmpty())
@@ -218,7 +170,7 @@ public class MVCModelo
 			{
 				Viaje actual = (Viaje)iter.next();
 
-				if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
+				if(actual.getHourDayMonth() == pMes && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
 				{
 					listaAux.enqueue(actual);
 				}
@@ -239,156 +191,113 @@ public class MVCModelo
 				Viaje actual = (Viaje)iter2.next();
 				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
-<<<<<<< HEAD
+
+		}
+	}
+
+		public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
+		{
+			LinkedQueue listaAux = new LinkedQueue<Viaje>();
+
+			if(lista.isEmpty())
+			{
+				System.out.println("La lista de viajes esta vacía.");
+			}
+			else
+			{
+				Iterator iter = lista.iterator();
+
+				while(iter.hasNext())
+				{
+					Viaje actual = (Viaje)iter.next();
+
+					if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
+					{
+						listaAux.enqueue(actual);
+					}
+				}
+			}
+
+			if(listaAux.isEmpty())
+			{
+				System.out.println("");
+				System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
+			}
+			else
+			{
+				System.out.println("");
+				Iterator iter2 = listaAux.iterator();
+				while(iter2.hasNext())
+				{
+					Viaje actual = (Viaje)iter2.next();
+					System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
+				}
+			}
+
+
 		}
 
 
-	}
-	public void ordenarPorTiempoPromedio()
-	{
-
-	}
-
-	private void zonaMenorId() 
-	{
-		Viaje menorZona = viajes.darElemento(1);
-		for (int i = 0; i < viajes.darTamano(); i++) 
+		private void zonaMenorId() 
 		{
-			if(menorZona.compareTo(viajes.darElemento(i))==1)
+			Viaje menorZona = viajes.darElemento(1);
+			for (int i = 0; i < viajes.darTamano(); i++) 
 			{
-				menorZona=viajes.darElemento(i);
+				if(menorZona.compareTo(viajes.darElemento(i))==1)
+				{
+					menorZona=viajes.darElemento(i);
+				}
+			}
+			System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
+		}
+
+		public void zonaMayorId()
+		{
+			Viaje mayorZona = viajes.darElemento(1);
+			for (int i = 0; i < viajes.darTamano(); i++) 
+			{
+				if(mayorZona.compareTo(viajes.darElemento(i))==-1)
+				{
+					mayorZona=viajes.darElemento(i);
+				}
+			}
+			System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
+		}
+
+
+		//---------------------------ORDENAMIENTO-----------------------------------------------
+		//--------------------------------------------------------------------------------------
+
+		public static void quickSort(DinamicArray arr, int start, int end){
+
+			int partition = partition(arr, start, end);
+
+			if(partition-1>start) {
+				quickSort(arr, start, partition - 1);
+			}
+			if(partition+1<end) {
+				quickSort(arr, partition + 1, end);
 			}
 		}
-		System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
-	}
 
-	public void zonaMayorId()
-	{
-		Viaje mayorZona = viajes.darElemento(1);
-		for (int i = 0; i < viajes.darTamano(); i++) 
-		{
-			if(mayorZona.compareTo(viajes.darElemento(i))==-1)
-			{
-				mayorZona=viajes.darElemento(i);
+		public static int partition(DinamicArray arr, int start, int end){
+			Viaje pivot = (Viaje) arr.darElemento(end);
+
+			for(int i = start; i < end; i++){
+				if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
+					Viaje temp = (Viaje) arr.darElemento(start);
+
+					arr.set(start, arr.darElemento(i));
+					arr.set(i, temp);
+					start++;
+				}
 			}
-		}
-		System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
-	}
 
-	//----------------------------------------------------------------------------
+			Viaje temp = (Viaje) arr.darElemento(start);
+			arr.set(start, pivot);
+			arr.set(end, temp);
 
-	/**
-	public void consultarInfoNVMTP(int pNViajes)
-	{
-		Iterator iter = lista.iterator();
-		double mayor = 0;
-		Viaje nuevo = null;
-
-		while(iter.hasNext()) 
-=======
-		}	
-		
-	}
-	
-	public void ordenarPorTimepoPromedio(int pN, int pDia)
-	{
-		quickSort(viajes, 0, viajes.darTamano()-1);
-		int cant = 0;
-		for(int i = viajes.darTamano()-1; i >= 0 && cant < pN; i--)
->>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
-		{
-			if(viajes.darElemento(i).getHourDayMonth() ==  pDia)
-			{
-				cant++;
-				Viaje act = viajes.darElemento(i);
-				System.out.println(FVERDECLARO + TBLANCO + cant + ". Zona de origen: " + act.getSourceid() + "  || Zona destino: " + act.getDstid() + "  || T promeido: " + act.getMean_travel_time() + "  || D estadar: " + act.getStandard_deviation_travel_time() + FF + FF);			
-			}
-		}
-<<<<<<< HEAD
-
-		listaAuxiliar.enqueue(nuevo);
-
-		viajeMayorParcial = (Viaje)listaAuxiliar.getLast();
-		 mayorParcial = viajeMayorParcial.getMean_travel_time();
-
-		for(int i = 0; i < pNViajes; i++)
-		{
-			funcAux(mayorParcial);
+			return start;
 		}
 
-		Iterator iter2 = listaAuxiliar.iterator();
-
-		while(iter2.hasNext())
-		{
-			Viaje actual = (Viaje)iter2.next();
-
-			System.out.println(actual.getMean_travel_time());
-		}
 	}
-
-	public void funcAux(double pMayorParcial)
-	{
-		Iterator iter = lista.iterator();
-		double mayor = 0;
-		Viaje nuevo = null;
-		while(iter.hasNext()) 
-		{
-			Viaje actual = (Viaje)iter.next();
-			if(actual.getMean_travel_time() > mayor && actual.getMean_travel_time() < mayorParcial)
-			{
-				mayorParcial = actual.getMean_travel_time();
-				nuevo = actual;
-			}
-		}
-		listaAuxiliar.enqueue(nuevo);
-		//System.out.println(listaAuxiliar.size());
-=======
-
-	public void consultarTPyDE(int dia, int zonaO, int zonaD)
-	{
-
->>>>>>> 68cf0d1adfe5b2fee0e9557996a28eff847f2a8e
-	}
-	 */
-	//-----------------------------------------------------------------------
-
-=======
-	}
-	
-	//---------------------------ORDENAMIENTO-----------------------------------------------
-	//--------------------------------------------------------------------------------------
-	
-	public static void quickSort(DinamicArray arr, int start, int end){
-		 
-        int partition = partition(arr, start, end);
- 
-        if(partition-1>start) {
-            quickSort(arr, start, partition - 1);
-        }
-        if(partition+1<end) {
-            quickSort(arr, partition + 1, end);
-        }
-    }
- 
-    public static int partition(DinamicArray arr, int start, int end){
-        Viaje pivot = (Viaje) arr.darElemento(end);
- 
-        for(int i = start; i < end; i++){
-            if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
-                Viaje temp = (Viaje) arr.darElemento(start);
-                
-                arr.set(start, arr.darElemento(i));
-                arr.set(i, temp);
-                start++;
-            }
-        }
- 
-        Viaje temp = (Viaje) arr.darElemento(start);
-        arr.set(start, pivot);
-        arr.set(end, temp);
- 
-        return start;
-    }
->>>>>>> 845b94df272488c7b5ffc4e4da4abe8115db84c6
-
-}
