@@ -66,7 +66,7 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null && n < 10)
+				while(nextline != null && n < 1000000)
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -140,58 +140,54 @@ public class MVCModelo
 		
 	}
 	
-	public void ordenarPorTiempoPromedio(LinkedQueue arr1, int low, int high)
-	{	
-		Viaje[] arr = arr1.toArray();	
-		System.out.print(arr[lista.size()-1].getMean_travel_time() + "  ");
-		if( low < high) 
-		{
-			int pi = partition(arr, low, high);
-			
-			ordenarPorTiempoPromedio(arr1, low, pi -1);
-			ordenarPorTiempoPromedio(arr1, pi +1 , high);
-		}	
-		
-	}
-	
-	//Metodo auxiliar quicksort
-	
-	public int partition( Viaje[] arr, int low, int high) 
+	public void ordenarPorTimepoPromedio(int pN, int pDia)
 	{
-		Viaje pivot = (Viaje)arr[high];
-		int i = low - 1; 
-		
-		for( int j = low; j <= high -1; j++ ) 
+		quickSort(viajes, 0, viajes.darTamano()-1);
+		int cant = 0;
+		for(int i = viajes.darTamano()-1; i >= 0 && cant < pN; i--)
 		{
-			if( arr[j].getMean_travel_time() <= pivot.getMean_travel_time()) 
+			if(viajes.darElemento(i).getHourDayMonth() ==  pDia)
 			{
-				i++;
-				
-				Viaje var = arr[i];
-				arr[i] = arr[j];
-				arr[j] = var;
+				cant++;
+				Viaje act = viajes.darElemento(i);
+				System.out.println(FVERDECLARO + TBLANCO + cant + ". Zona de origen: " + act.getSourceid() + "  || Zona destino: " + act.getDstid() + "  || T promeido: " + act.getMean_travel_time() + "  || D estadar: " + act.getStandard_deviation_travel_time() + FF + FF);			
 			}
 		}
-		
-		Viaje var = arr[ i+1 ];
-		arr[i+1] = arr[high];
-		arr[high] = var; 
-		
-		return i + 1;	
-		
-		
 	}
 	
-	public void consultarInfoNVMTP(int pN)
-	{
-		ordenarPorTiempoPromedio(lista, 0, lista.size()-1);
-		Iterator iter = lista.iterator();
-		
-		if(iter.hasNext())
-		{
-			Viaje actual = (Viaje)iter.next();
-			System.out.print(actual.getMean_travel_time());
-		}
-	}
+	//---------------------------ORDENAMIENTO-----------------------------------------------
+	//--------------------------------------------------------------------------------------
+	
+	public static void quickSort(DinamicArray arr, int start, int end){
+		 
+        int partition = partition(arr, start, end);
+ 
+        if(partition-1>start) {
+            quickSort(arr, start, partition - 1);
+        }
+        if(partition+1<end) {
+            quickSort(arr, partition + 1, end);
+        }
+    }
+ 
+    public static int partition(DinamicArray arr, int start, int end){
+        Viaje pivot = (Viaje) arr.darElemento(end);
+ 
+        for(int i = start; i < end; i++){
+            if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
+                Viaje temp = (Viaje) arr.darElemento(start);
+                
+                arr.set(start, arr.darElemento(i));
+                arr.set(i, temp);
+                start++;
+            }
+        }
+ 
+        Viaje temp = (Viaje) arr.darElemento(start);
+        arr.set(start, pivot);
+        arr.set(end, temp);
+ 
+        return start;
+    }
 
 }
