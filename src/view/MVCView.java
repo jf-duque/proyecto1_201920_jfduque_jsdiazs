@@ -39,8 +39,8 @@ public class MVCView
 		public void funciones() // funciones lo modifique
 		{
 			System.out.println("Elegir la funcion:");
-			System.out.println("1. Consultar timepo promedio de viaje y su desviación estandar.");
-			System.out.println("2. Consultar la información de los viajes con mayor timpo promedio.");
+			System.out.println("1. Consultar tiempo promedio de viaje y su desviación estandar.");
+			System.out.println("2. Consultar la información de los viajes con mayor tiempo promedio.");
 			System.out.println("3. Comparar los tiempos prmedio de los viajes.");
 			System.out.println("4. Exit");
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");

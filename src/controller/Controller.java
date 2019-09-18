@@ -115,7 +115,7 @@ public class Controller {
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			//modelo.ordenarPorTimepoPromedio(n, d);
+			modelo.ordenarPorTimepoPromedio(n, d);
 			break;
 
 		default: 
@@ -149,11 +149,15 @@ public class Controller {
 			break;
 
 		case 2:
+			view.printMes();
+			Scanner lectorD = new Scanner(System.in);
+			int d = lectorD.nextInt();
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			//modelo.consultarInfoNVMTP(n);
+			modelo.ordenarPorTimepoPromedio(n, d);
 			break;
+
 
 		default: 
 			System.out.println("--------- \n Opcion Invalida !! \n---------");
