@@ -54,6 +54,54 @@ public class MVCModelo
 		lista = new LinkedQueue<Viaje>();
 
 	}
+	
+	public void CSVreaderHour(int pTrimestre)
+	{
+		if(pTrimestre > 4)
+		{
+			System.out.print("Numero de trimestre inválido ");
+		}
+		else
+		{
+
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + pTrimestre + "-All-HourlyAggregate.csv"));			
+				String[] nextline = reader.readNext();
+				nextline = reader.readNext();
+				int n = 0;
+				while(nextline != null && n < 1000000)
+				{					
+					int   sourceid = Integer.parseInt(nextline[0]);
+					int   dstid = Integer.parseInt(nextline[1]);
+					int   dayHourMonth = Integer.parseInt(nextline[2]);
+					float mean_travel_time = Float.parseFloat(nextline[3]);
+					float standard_deviation_travel_time = Float.parseFloat(nextline[4]);
+					float geometric_mean_travel_time = Float.parseFloat(nextline[5]);
+					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
+					n++;
+					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+					lista.enqueue(nuevo);
+					viajes.agregar(nuevo);
+
+					nextline = reader.readNext();					
+				}
+				System.out.println("");
+				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
+				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
+				zonaMenorId();
+				System.out.println("");
+				reader.close();
+
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public void CSVreaderWeek(int pTrimestre)
 	{
@@ -157,7 +205,6 @@ public class MVCModelo
 	public void consultarTPyDEMes(int pZonaO, int pZonaD, int pMes)
 	{
 		LinkedQueue listaAux = new LinkedQueue<Viaje>();
-
 		DinamicArray aux = new DinamicArray<Viaje>();
 		if(viajes.isEmpty())
 		{
@@ -196,47 +243,49 @@ public class MVCModelo
 		}
 	}
 
-		public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
+
+	public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
+	{
+		LinkedQueue listaAux = new LinkedQueue<Viaje>();
+
+		if(lista.isEmpty())
 		{
-			LinkedQueue listaAux = new LinkedQueue<Viaje>();
+			System.out.println("La lista de viajes esta vacía.");
+		}
+		else
+		{
+			Iterator iter = lista.iterator();
 
-			if(lista.isEmpty())
+			while(iter.hasNext())
 			{
-				System.out.println("La lista de viajes esta vacía.");
-			}
-			else
-			{
-				Iterator iter = lista.iterator();
+				Viaje actual = (Viaje)iter.next();
 
-				while(iter.hasNext())
+				if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
 				{
-					Viaje actual = (Viaje)iter.next();
-
-					if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
-					{
-						listaAux.enqueue(actual);
-					}
+					listaAux.enqueue(actual);
 				}
 			}
+		}
 
-			if(listaAux.isEmpty())
+		if(listaAux.isEmpty())
+		{
+			System.out.println("");
+			System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
+		}
+		else
+		{
+			System.out.println("");
+			Iterator iter2 = listaAux.iterator();
+			while(iter2.hasNext())
 			{
-				System.out.println("");
-				System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
+				Viaje actual = (Viaje)iter2.next();
+				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
-			else
-			{
-				System.out.println("");
-				Iterator iter2 = listaAux.iterator();
-				while(iter2.hasNext())
-				{
-					Viaje actual = (Viaje)iter2.next();
-					System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
-				}
-			}
-
 
 		}
+
+
+	}
 
 	public void ordenarPorTimepoPromedio(int pN, int pDia)
 	{
@@ -253,66 +302,81 @@ public class MVCModelo
 		}
 	}
 
-		private void zonaMenorId() 
+	public void zonaMenorId() 
+	{
+		Viaje menorZona = viajes.darElemento(1);
+		for (int i = 0; i < viajes.darTamano(); i++) 
 		{
-			Viaje menorZona = viajes.darElemento(1);
-			for (int i = 0; i < viajes.darTamano(); i++) 
+			if(menorZona.compareTo(viajes.darElemento(i))==1)
 			{
-				if(menorZona.compareTo(viajes.darElemento(i))==1)
-				{
-					menorZona=viajes.darElemento(i);
-				}
-			}
-			System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
-		}
-
-		public void zonaMayorId()
-		{
-			Viaje mayorZona = viajes.darElemento(1);
-			for (int i = 0; i < viajes.darTamano(); i++) 
-			{
-				if(mayorZona.compareTo(viajes.darElemento(i))==-1)
-				{
-					mayorZona=viajes.darElemento(i);
-				}
-			}
-			System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
-		}
-
-
-		//---------------------------ORDENAMIENTO-----------------------------------------------
-		//--------------------------------------------------------------------------------------
-
-		public static void quickSort(DinamicArray arr, int start, int end){
-
-			int partition = partition(arr, start, end);
-
-			if(partition-1>start) {
-				quickSort(arr, start, partition - 1);
-			}
-			if(partition+1<end) {
-				quickSort(arr, partition + 1, end);
+				menorZona=viajes.darElemento(i);
 			}
 		}
-
-		public static int partition(DinamicArray arr, int start, int end){
-			Viaje pivot = (Viaje) arr.darElemento(end);
-
-			for(int i = start; i < end; i++){
-				if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
-					Viaje temp = (Viaje) arr.darElemento(start);
-
-					arr.set(start, arr.darElemento(i));
-					arr.set(i, temp);
-					start++;
-				}
-			}
-
-			Viaje temp = (Viaje) arr.darElemento(start);
-			arr.set(start, pivot);
-			arr.set(end, temp);
-
-			return start;
-		}
-
+		System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
 	}
+
+	public void zonaMayorId()
+	{
+		Viaje mayorZona = viajes.darElemento(1);
+		for (int i = 0; i < viajes.darTamano(); i++) 
+		{
+			if(mayorZona.compareTo(viajes.darElemento(i))==-1)
+			{
+				mayorZona=viajes.darElemento(i);
+			}
+		}
+		System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
+	}
+
+
+	//---------------------------ORDENAMIENTO-----------------------------------------------
+	//--------------------------------------------------------------------------------------
+
+	public static void quickSort(DinamicArray arr, int start, int end){
+
+		int partition = partition(arr, start, end);
+
+		if(partition-1>start) {
+			quickSort(arr, start, partition - 1);
+		}
+		if(partition+1<end) {
+			quickSort(arr, partition + 1, end);
+		}
+	}
+
+	public static int partition(DinamicArray arr, int start, int end){
+		Viaje pivot = (Viaje) arr.darElemento(end);
+
+		for(int i = start; i < end; i++){
+			if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
+				Viaje temp = (Viaje) arr.darElemento(start);
+
+				arr.set(start, arr.darElemento(i));
+				arr.set(i, temp);
+				start++;
+			}
+		}
+
+		Viaje temp = (Viaje) arr.darElemento(start);
+		arr.set(start, pivot);
+		arr.set(end, temp);
+
+		return start;
+	}
+	
+	//----------------------------Funciones para hora------------------------------------------
+	//-----------------------------------------------------------------------------------------
+	
+	public void consultarViajesFrajaH(int pZonaO, int pZonaD, int pHI, int pHF)
+	{
+		for(int i = 0; i < viajes.darTamano(); i++)
+		{
+			Viaje act = viajes.darElemento(i);
+			if(act.getSourceid() >= pZonaO && act.getDstid() <= pZonaD && act.getHourDayMonth() >= pHI)
+			{
+				
+			}
+		}
+	}
+
+}
