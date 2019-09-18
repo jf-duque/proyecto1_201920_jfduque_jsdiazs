@@ -156,14 +156,9 @@ public class MVCModelo
 
 	public void consultarTPyDEMes(int pZonaO, int pZonaD, int pMes)
 	{
-<<<<<<< HEAD
 		LinkedQueue listaAux = new LinkedQueue<Viaje>();
 
 		if(lista.isEmpty())
-=======
-		DinamicArray aux = new DinamicArray<Viaje>();
-		if(viajes.isEmpty())
->>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e
 		{
 			System.out.println("La lista de viajes esta vacía.");
 		}
@@ -200,54 +195,49 @@ public class MVCModelo
 		}
 	}
 
-		public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
+
+	public void consultarTPyDE(int pZonaO, int pZonaD, int pDia)
+	{
+		LinkedQueue listaAux = new LinkedQueue<Viaje>();
+
+		if(lista.isEmpty())
 		{
-			LinkedQueue listaAux = new LinkedQueue<Viaje>();
+			System.out.println("La lista de viajes esta vacía.");
+		}
+		else
+		{
+			Iterator iter = lista.iterator();
 
-			if(lista.isEmpty())
+			while(iter.hasNext())
 			{
-				System.out.println("La lista de viajes esta vacía.");
-			}
-			else
-			{
-				Iterator iter = lista.iterator();
+				Viaje actual = (Viaje)iter.next();
 
-				while(iter.hasNext())
+				if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
 				{
-					Viaje actual = (Viaje)iter.next();
-
-					if(actual.getHourDayMonth() == pDia && actual.getSourceid() == pZonaO && actual.getDstid() == pZonaD)
-					{
-						listaAux.enqueue(actual);
-					}
+					listaAux.enqueue(actual);
 				}
 			}
-
-			if(listaAux.isEmpty())
-			{
-				System.out.println("");
-				System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
-			}
-			else
-			{
-				System.out.println("");
-				Iterator iter2 = listaAux.iterator();
-				while(iter2.hasNext())
-				{
-					Viaje actual = (Viaje)iter2.next();
-					System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
-				}
-			}
-<<<<<<< HEAD
-
-
 		}
 
-=======
+		if(listaAux.isEmpty())
+		{
+			System.out.println("");
+			System.out.println(FROJO + TBLANCO + "No hay vijaes para los datos especificados." + FF + FF);
+		}
+		else
+		{
+			System.out.println("");
+			Iterator iter2 = listaAux.iterator();
+			while(iter2.hasNext())
+			{
+				Viaje actual = (Viaje)iter2.next();
+				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
+			}
 		}
 
 
 	}
+
 	public void ordenarPorTimepoPromedio(int pN, int pDia)
 	{
 		quickSort(viajes, 0, viajes.darTamano()-1);
@@ -262,107 +252,105 @@ public class MVCModelo
 			}
 		}
 	}
->>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e
 
-		private void zonaMenorId() 
+	private void zonaMenorId() 
+	{
+		Viaje menorZona = viajes.darElemento(1);
+		for (int i = 0; i < viajes.darTamano(); i++) 
 		{
-			Viaje menorZona = viajes.darElemento(1);
-			for (int i = 0; i < viajes.darTamano(); i++) 
+			if(menorZona.compareTo(viajes.darElemento(i))==1)
 			{
-				if(menorZona.compareTo(viajes.darElemento(i))==1)
-				{
-					menorZona=viajes.darElemento(i);
-				}
-			}
-			System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
-		}
-
-		public void zonaMayorId()
-		{
-			Viaje mayorZona = viajes.darElemento(1);
-			for (int i = 0; i < viajes.darTamano(); i++) 
-			{
-				if(mayorZona.compareTo(viajes.darElemento(i))==-1)
-				{
-					mayorZona=viajes.darElemento(i);
-				}
-			}
-			System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
-		}
-
-<<<<<<< HEAD
-
-		//---------------------------ORDENAMIENTO-----------------------------------------------
-		//--------------------------------------------------------------------------------------
-
-		public static void quickSort(DinamicArray arr, int start, int end){
-
-			int partition = partition(arr, start, end);
-
-			if(partition-1>start) {
-				quickSort(arr, start, partition - 1);
-			}
-			if(partition+1<end) {
-				quickSort(arr, partition + 1, end);
+				menorZona=viajes.darElemento(i);
 			}
 		}
-
-		public static int partition(DinamicArray arr, int start, int end){
-			Viaje pivot = (Viaje) arr.darElemento(end);
-
-			for(int i = start; i < end; i++){
-				if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
-					Viaje temp = (Viaje) arr.darElemento(start);
-
-					arr.set(start, arr.darElemento(i));
-					arr.set(i, temp);
-					start++;
-				}
-			}
-
-			Viaje temp = (Viaje) arr.darElemento(start);
-			arr.set(start, pivot);
-			arr.set(end, temp);
-
-			return start;
-		}
-
+		System.out.println(FVERDECLARO + TBLANCO + "La zona con menor identificador es " + menorZona.getSourceid() + FF + FF);
 	}
-=======
+
+	public void zonaMayorId()
+	{
+		Viaje mayorZona = viajes.darElemento(1);
+		for (int i = 0; i < viajes.darTamano(); i++) 
+		{
+			if(mayorZona.compareTo(viajes.darElemento(i))==-1)
+			{
+				mayorZona=viajes.darElemento(i);
+			}
+		}
+		System.out.println(FVERDECLARO + TBLANCO + "La zona con mayor identificador es " + mayorZona.getSourceid() + FF + FF);
+	}
+
+
 	//---------------------------ORDENAMIENTO-----------------------------------------------
 	//--------------------------------------------------------------------------------------
-	
+
 	public static void quickSort(DinamicArray arr, int start, int end){
-		 
-        int partition = partition(arr, start, end);
- 
-        if(partition-1>start) {
-            quickSort(arr, start, partition - 1);
-        }
-        if(partition+1<end) {
-            quickSort(arr, partition + 1, end);
-        }
-    }
- 
-    public static int partition(DinamicArray arr, int start, int end){
-        Viaje pivot = (Viaje) arr.darElemento(end);
- 
-        for(int i = start; i < end; i++){
-            if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
-                Viaje temp = (Viaje) arr.darElemento(start);
-                
-                arr.set(start, arr.darElemento(i));
-                arr.set(i, temp);
-                start++;
-            }
-        }
- 
-        Viaje temp = (Viaje) arr.darElemento(start);
-        arr.set(start, pivot);
-        arr.set(end, temp);
- 
-        return start;
-    }
+
+		int partition = partition(arr, start, end);
+
+		if(partition-1>start) {
+			quickSort(arr, start, partition - 1);
+		}
+		if(partition+1<end) {
+			quickSort(arr, partition + 1, end);
+		}
+	}
+
+	public static int partition(DinamicArray arr, int start, int end){
+		Viaje pivot = (Viaje) arr.darElemento(end);
+
+		for(int i = start; i < end; i++){
+			if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
+				Viaje temp = (Viaje) arr.darElemento(start);
+
+				arr.set(start, arr.darElemento(i));
+				arr.set(i, temp);
+				start++;
+			}
+		}
+
+		Viaje temp = (Viaje) arr.darElemento(start);
+		arr.set(start, pivot);
+		arr.set(end, temp);
+
+		return start;
+	}
+
+}
+=======
+//---------------------------ORDENAMIENTO-----------------------------------------------
+//--------------------------------------------------------------------------------------
+
+public static void quickSort(DinamicArray arr, int start, int end){
+
+	int partition = partition(arr, start, end);
+
+	if(partition-1>start) {
+		quickSort(arr, start, partition - 1);
+	}
+	if(partition+1<end) {
+		quickSort(arr, partition + 1, end);
+	}
+}
+
+public static int partition(DinamicArray arr, int start, int end){
+	Viaje pivot = (Viaje) arr.darElemento(end);
+
+	for(int i = start; i < end; i++){
+		if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
+			Viaje temp = (Viaje) arr.darElemento(start);
+
+			arr.set(start, arr.darElemento(i));
+			arr.set(i, temp);
+			start++;
+		}
+	}
+
+	Viaje temp = (Viaje) arr.darElemento(start);
+	arr.set(start, pivot);
+	arr.set(end, temp);
+
+	return start;
+}
 
 }
 >>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e
