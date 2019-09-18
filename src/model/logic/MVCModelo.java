@@ -11,6 +11,7 @@ import com.opencsv.CSVReader;
 
 import model.data_structures.DinamicArray;
 import model.data_structures.DinamicArrayIterator;
+import model.data_structures.IDinamicArray;
 import model.data_structures.LinkedQueue;
 import model.logic.Viaje;
 
@@ -53,6 +54,54 @@ public class MVCModelo
 		listaMes = new DinamicArray<Viaje>();
 		lista = new LinkedQueue<Viaje>();
 
+	}
+	
+	public void CSVreaderHour(int pTrimestre)
+	{
+		if(pTrimestre > 4)
+		{
+			System.out.print("Numero de trimestre inválido ");
+		}
+		else
+		{
+
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(new FileReader("./data/bogota-cadastral-2018-" + pTrimestre + "-All-HourlyAggregate.csv"));			
+				String[] nextline = reader.readNext();
+				nextline = reader.readNext();
+				int n = 0;
+				while(nextline != null && n < 1000000)
+				{					
+					int   sourceid = Integer.parseInt(nextline[0]);
+					int   dstid = Integer.parseInt(nextline[1]);
+					int   dayHourMonth = Integer.parseInt(nextline[2]);
+					float mean_travel_time = Float.parseFloat(nextline[3]);
+					float standard_deviation_travel_time = Float.parseFloat(nextline[4]);
+					float geometric_mean_travel_time = Float.parseFloat(nextline[5]);
+					float geometric_standard_deviation_travel_time = Float.parseFloat(nextline[6]);
+					n++;
+					Viaje nuevo = new Viaje(sourceid, dstid, dayHourMonth, mean_travel_time, standard_deviation_travel_time, geometric_mean_travel_time, geometric_standard_deviation_travel_time);
+					lista.enqueue(nuevo);
+					viajes.agregar(nuevo);
+
+					nextline = reader.readNext();					
+				}
+				System.out.println("");
+				System.out.println(FVERDECLARO + TBLANCO + "El trimestre elegio fue: 2018-" +  pTrimestre +  "." + FF + FF );
+				System.out.println(FVERDECLARO + TBLANCO + "La cantidad de viajes fueron: "+ n + "." + FF + FF);
+				zonaMenorId();
+				System.out.println("");
+				reader.close();
+
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void CSVreaderWeek(int pTrimestre)
@@ -118,7 +167,7 @@ public class MVCModelo
 				String[] nextline = reader.readNext();
 				nextline = reader.readNext();
 				int n = 0;
-				while(nextline != null && n<100)
+				while(nextline != null )
 				{					
 					int   sourceid = Integer.parseInt(nextline[0]);
 					int   dstid = Integer.parseInt(nextline[1]);
@@ -157,8 +206,8 @@ public class MVCModelo
 	public void consultarTPyDEMes(int pZonaO, int pZonaD, int pMes)
 	{
 		LinkedQueue listaAux = new LinkedQueue<Viaje>();
-
-		if(lista.isEmpty())
+		DinamicArray aux = new DinamicArray<Viaje>();
+		if(viajes.isEmpty())
 		{
 			System.out.println("La lista de viajes esta vacía.");
 		}
@@ -233,10 +282,12 @@ public class MVCModelo
 				Viaje actual = (Viaje)iter2.next();
 				System.out.println(FVERDECLARO + TBLANCO + "Tiempo promedio: " + actual.getMean_travel_time() + " || Desviación estandar: " + actual.getStandard_deviation_travel_time() + FF + FF);
 			}
+
 		}
 
 
 	}
+		
 
 	public void ordenarPorTimepoPromedio(int pN, int pDia)
 	{
@@ -253,7 +304,7 @@ public class MVCModelo
 		}
 	}
 
-	private void zonaMenorId() 
+	public void zonaMenorId() 
 	{
 		Viaje menorZona = viajes.darElemento(1);
 		for (int i = 0; i < viajes.darTamano(); i++) 
@@ -316,6 +367,21 @@ public class MVCModelo
 
 		return start;
 	}
+	
+	
+	//----------------------------Funciones para hora------------------------------------------
+	//-----------------------------------------------------------------------------------------
+	
+	public void consultarViajesFrajaH(int pZonaO, int pZonaD, int pHI, int pHF)
+	{
+		for(int i = 0; i < viajes.darTamano(); i++)
+		{
+			Viaje act = viajes.darElemento(i);
+			if(act.getSourceid() >= pZonaO && act.getDstid() <= pZonaD && act.getHourDayMonth() >= pHI && act.getHourDayMonth() <= pHF)
+			{
+				System.out.print("");
+			}
+		}
+	}
 
 }
-

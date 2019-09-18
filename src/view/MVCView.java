@@ -46,6 +46,28 @@ public class MVCView
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
 		
+		public void funcionesHour()
+		{
+			System.out.println("Elegir la funcion:");
+			System.out.println("1.Consultar los viajes entre una zona de origen y una zona destino en una franja horaria.");
+			System.out.println("2. Consultar la información de los N viajes con mayor tiempo promedio para una hora dada.");
+			System.out.println("3. Generar una gráfica ASCII.");
+			System.out.println("4. Exit");
+			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
+		}
+		
+		//Menus para funciones por hora
+		
+		public void printHoraI()
+		{
+			System.out.print("Ingrese la hora de inicio: ");
+		}
+		
+		public void printHoraF()
+		{
+			System.out.print("Ingrese la hora final: ");
+		}
+		
 		//menu para el metodo consultar tiempo promedio y desviacion estandar
 		public void printZonaOrigen()
 		{
@@ -63,6 +85,11 @@ public class MVCView
 		public void printMes()
 		{
 			System.out.print("Ingrese el mes (siendo enero = 1, febrero = 2, e.t.c): ");
+		}
+		
+		public void printHora()
+		{
+			System.out.println("Ingrese la hora (De 0 a 23 horas)");
 		}
 		//---------------------------------------------------------------------
 		

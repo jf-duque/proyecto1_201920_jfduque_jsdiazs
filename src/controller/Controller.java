@@ -38,7 +38,7 @@ public class Controller {
 			int option = lector.nextInt();
 			switch(option){
 			case 1:
-				//runHour();
+				runHour();
 				break;
 			case 2:
 				runWeek();
@@ -54,6 +54,19 @@ public class Controller {
 			}
 			fin=true;
 		}
+	}
+	
+	public void runHour()
+	{
+		Scanner lector = new Scanner(System.in);
+		boolean fin = false;
+		String dato = "";
+		String respuesta = "";
+		
+		view.printTrimestre();
+		int option = lector.nextInt();
+		modelo.CSVreaderHour(option);
+		printMenu3();
 	}
 
 	public void runWeek() 
@@ -165,6 +178,52 @@ public class Controller {
 			System.out.println("--------- \n Opcion Invalida !! \n---------");
 			break;
 		}
+	}
+	
+	public void printMenu3()
+	{
+		view.funcionesHour();
+		
+		Scanner lector = new Scanner(System.in);
+		boolean fin = false;
+		String dato = "";
+		String respuesta = "";
+		int option = lector.nextInt();
+		switch(option)
+		{
+		case 1:
+			view.printZonaOrigen();
+			Scanner lectorZO = new Scanner(System.in);
+			int zonaO = lectorZO.nextInt();
+			view.printZonaDestino();
+			Scanner lectorZD = new Scanner(System.in);
+			int zonaD = lectorZD.nextInt();
+			view.printHoraI();
+			Scanner lectorHI = new Scanner(System.in);
+			int HI = lectorHI.nextInt();
+			view.printHoraF();
+			Scanner lectorF = new Scanner(System.in);
+			int HF = lectorF.nextInt();
+			modelo.consultarViajesFrajaH(zonaO, zonaD, HI, HF);
+			view.funcionesHour();
+			break;
+
+		case 2:
+			view.printHora();
+			Scanner lectorD = new Scanner(System.in);
+			int d = lectorD.nextInt();
+			view.printCantidadViajes();
+			Scanner lectorNV = new Scanner(System.in);
+			int n = lectorNV.nextInt();
+			modelo.ordenarPorTimepoPromedio(n, d);
+			break;
+
+
+		default: 
+			System.out.println("--------- \n Opcion Invalida !! \n---------");
+			break;
+		}
+		
 	}
 	
 	
