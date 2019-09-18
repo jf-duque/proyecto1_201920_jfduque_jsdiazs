@@ -149,13 +149,15 @@ public class Controller {
 			break;
 
 		case 2:
-			view.printMes();
+			
+			view.Advert();
+			view.printMesSel();
 			Scanner lectorD = new Scanner(System.in);
-			int d = lectorD.nextInt();
+			int m = lectorD.nextInt();
 			view.printCantidadViajes();
 			Scanner lectorNV = new Scanner(System.in);
 			int n = lectorNV.nextInt();
-			modelo.ordenarPorTimepoPromedio(n, d);
+			modelo.ordenarPorTimepoPromedio(n, m);
 			break;
 
 

@@ -76,6 +76,22 @@ public class MVCView
 		{
 			System.out.print("Ingrese la canditad de viajes que desea consultar:");
 		}	
+		
+		public void printMesSel()
+		{
+			System.out.print("Ingrese el mes que desea consultar:");
+		}
+		
+		public void Advert()
+		{
+				System.out.println("Recuerde que el trimestre elegido afectara en los meses que puede seleccionar");
+				System.out.println("2018-1 incluye los meses 1-3");
+				System.out.println("2018-2 incluye los meses 4-6");
+				System.out.println("2018-3 incluye los meses 7-9");
+				System.out.println("2018-4 incluye los meses 10-12");
+				System.out.println("");
+		}
+		
 		//---------------------------------------------------------------------
 		
 

@@ -283,7 +283,8 @@ public class MVCModelo
 	//---------------------------ORDENAMIENTO-----------------------------------------------
 	//--------------------------------------------------------------------------------------
 
-	public static void quickSort(DinamicArray arr, int start, int end){
+	public static void quickSort(DinamicArray arr, int start, int end)
+	{
 
 		int partition = partition(arr, start, end);
 
@@ -295,7 +296,8 @@ public class MVCModelo
 		}
 	}
 
-	public static int partition(DinamicArray arr, int start, int end){
+	public static int partition(DinamicArray arr, int start, int end)
+	{
 		Viaje pivot = (Viaje) arr.darElemento(end);
 
 		for(int i = start; i < end; i++){
@@ -316,41 +318,4 @@ public class MVCModelo
 	}
 
 }
-=======
-//---------------------------ORDENAMIENTO-----------------------------------------------
-//--------------------------------------------------------------------------------------
 
-public static void quickSort(DinamicArray arr, int start, int end){
-
-	int partition = partition(arr, start, end);
-
-	if(partition-1>start) {
-		quickSort(arr, start, partition - 1);
-	}
-	if(partition+1<end) {
-		quickSort(arr, partition + 1, end);
-	}
-}
-
-public static int partition(DinamicArray arr, int start, int end){
-	Viaje pivot = (Viaje) arr.darElemento(end);
-
-	for(int i = start; i < end; i++){
-		if(((Viaje) arr.darElemento(i)).getMean_travel_time() < pivot.getMean_travel_time()){
-			Viaje temp = (Viaje) arr.darElemento(start);
-
-			arr.set(start, arr.darElemento(i));
-			arr.set(i, temp);
-			start++;
-		}
-	}
-
-	Viaje temp = (Viaje) arr.darElemento(start);
-	arr.set(start, pivot);
-	arr.set(end, temp);
-
-	return start;
-}
-
-}
->>>>>>> 1e5d08b53f310c494aaece8d6fbf22294cce375e
